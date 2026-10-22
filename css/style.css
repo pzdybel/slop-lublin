@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --bg: rgba(14, 14, 16, 0.62);
   --bg2: rgba(255, 255, 255, 0.06);
   --line: rgba(255, 255, 255, 0.10);
@@ -10,7 +11,7 @@
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; overflow: hidden; background: #0b0b0c; color: var(--txt);
-  font: 13px/1.35 "Space Grotesk", system-ui, sans-serif; -webkit-font-smoothing: antialiased; touch-action: none; }
+  font: 13px/1.35 "Instrument Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; touch-action: none; }
 #c { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; outline: none; }
 a { color: var(--acc); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -23,7 +24,7 @@ button { font: inherit; color: var(--txt); background: transparent; border: 0; c
 #loader { position: fixed; inset: 0; z-index: 50; display: grid; place-content: center; text-align: center; gap: 10px;
   background: radial-gradient(ellipse at 50% 40%, #2a2119 0%, #0b0b0c 70%); transition: opacity .6s; }
 #loader.out { opacity: 0; pointer-events: none; }
-.ld-badge, .badge { display: grid; place-items: center; font: 700 15px "Space Grotesk"; color: #1a1408;
+.ld-badge, .badge { display: grid; place-items: center; font: 700 15px "Instrument Sans"; color: #1a1408;
   background: linear-gradient(135deg, var(--acc), var(--acc2)); border-radius: 10px; }
 .ld-badge { width: 56px; height: 56px; margin: 0 auto 6px; font-size: 22px; border-radius: 14px; }
 #loader h1 { margin: 0; font-size: 34px; letter-spacing: -0.02em; }

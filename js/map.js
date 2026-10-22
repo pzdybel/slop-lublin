@@ -71,7 +71,7 @@ export class CityMap {
     g.strokeStyle = 'rgba(197,140,255,.85)'; g.lineWidth = Math.max(1.2, 1.6 / s * this.dpr); g.stroke(L.tw);
     if (this.route) { g.strokeStyle = '#4fc3f7'; g.lineWidth = Math.max(5, 5 / s * this.dpr); g.stroke(path(this.route)); }
     // landmarks
-    g.font = `${13 / s * this.dpr}px "Space Grotesk", sans-serif`; g.textBaseline = 'middle';
+    g.font = `${13 / s * this.dpr}px "Instrument Sans", sans-serif`; g.textBaseline = 'middle';
     for (const l of this.landmarks) {
       g.fillStyle = '#fff'; g.beginPath(); g.arc(l.x, l.z, 5 / s * this.dpr, 0, 7); g.fill();
       if (this.scale > 0.22) { g.fillStyle = 'rgba(255,255,255,.85)'; g.fillText(l.name, l.x + 9 / s * this.dpr, l.z); }
