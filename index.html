@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Slop Lublin — trójwymiarowy Lublin z prawdziwych ulic OpenStreetMap. Spacer, auto, rower, helikopter. Remiks Slop New York Mr.dooba.">
+<title>Slop Lublin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="loader">
+  <div class="ld-badge">LU</div>
+  <h1>Slop Lublin</h1>
+  <p id="ld-msg">Wczytuję ulice Lublina…</p>
+  <div class="ld-bar"><i id="ld-fill"></i></div>
+  <p class="ld-credit">remiks <a href="https://github.com/mrdoob/slop-newyork" target="_blank" rel="noopener">Slop New York</a> · Mr.doob</p>
+</div>
+
+<div id="hud" hidden>
+  <header class="panel brand">
+    <div class="badge">LU</div>
+    <div>
+      <h1>Slop Lublin</h1>
+      <div class="sub">three.js · OpenStreetMap · <span id="fps">60</span> fps</div>
+    </div>
+    <a class="gh" href="https://github.com/pzdybel/slop-lublin" target="_blank" rel="noopener">GitHub ↗</a>
+  </header>
+
+  <div class="panel tod" id="tod">
+    <button data-tod="golden" class="on">Złota godzina</button>
+    <button data-tod="noon">Południe</button>
+    <button data-tod="blue">Niebieska godzina</button>
+    <button data-tod="night">Noc</button>
+  </div>
+
+  <div class="panel teleport">
+    <button id="btn-map" class="wide">Mapa <kbd>M</kbd></button>
+    <div class="label">Teleport</div>
+    <div id="tp-list"></div>
+  </div>
+
+  <div class="panel where">
+    <div class="compass" id="compass"><span>N</span></div>
+    <div>
+      <div class="street" id="street">—</div>
+      <div class="near" id="near"></div>
+    </div>
+  </div>
+
+  <div class="panel modes" id="modes">
+    <button data-mode="walk" class="on">Pieszo <kbd>1</kbd></button>
+    <button data-mode="drive">Auto <kbd>2</kbd></button>
+    <button data-mode="bike">Rower <kbd>3</kbd></button>
+    <button data-mode="fly">Lot <kbd>4</kbd></button>
+  </div>
+
+  <div class="panel gauge">
+    <div class="veh" id="veh">Spacer</div>
+    <div class="spd"><b id="spd">0</b><span>km/h</span></div>
+    <div class="alt">wys. <b id="alt">0</b> m</div>
+  </div>
+
+  <div class="panel cams">
+    <button id="cam-cur" class="wide">Pościg <kbd>V</kbd></button>
+    <div class="label">Śledzenie</div>
+    <button data-cam="chase">Pościg <kbd>5</kbd></button>
+    <button data-cam="low">Nisko, akcja <kbd>6</kbd></button>
+    <button data-cam="fp">Z oczu / kokpit <kbd>7</kbd></button>
+    <div class="label">Widokowe</div>
+    <button data-cam="s-castle">Zamek i Podzamcze <kbd>8</kbd></button>
+    <button data-cam="s-gate">Brama Krakowska <kbd>9</kbd></button>
+    <button data-cam="s-trynit">Wieża Trynitarska <kbd>0</kbd></button>
+    <button data-cam="s-litewski">Plac Litewski</button>
+    <button data-cam="s-csk">Centrum Spotkania Kultur</button>
+    <button data-cam="auto">Auto-reżyser</button>
+  </div>
+
+  <div class="help" id="help">
+    <b>WSAD / strzałki</b> ruch · <b>Shift</b> sprint/turbo · <b>Spacja</b> skok / w górę · <b>C</b> w dół · <b>przeciągnij</b> kamera · <b>kółko</b> zoom · <b>H</b> ukryj
+  </div>
+
+  <footer class="credit">
+    Inspiracja: <a href="https://mrdoob.github.io/slop-newyork/" target="_blank" rel="noopener">Slop New York</a> autorstwa
+    <a href="https://github.com/mrdoob/slop-newyork" target="_blank" rel="noopener">Mr.dooba</a> (MIT) ·
+    Dane: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> (ODbL)
+  </footer>
+</div>
+
+<div id="touch" hidden>
+  <div id="stick"><i></i></div>
+  <button id="t-up">▲</button>
+  <button id="t-down">▼</button>
+</div>
+
+<div id="map" hidden>
+  <div class="map-top">
+    <div><h2>Atlas ulic Lublina</h2><div class="sub" id="map-where">Jesteś przy —</div></div>
+    <button id="map-close">Zamknij <kbd>Esc</kbd></button>
+  </div>
+  <canvas id="map-c"></canvas>
+  <div class="map-foot">Kliknij — teleport · Shift + klik — wyznacz trasę GPS · przeciągnij, żeby przesunąć · kółko — zoom
+    <span class="lg"><i class="me"></i>Ty <i class="lm"></i>Zabytek <i class="gps"></i>Trasa GPS <i class="tw"></i>Trakcja trolejbusowa</span></div>
+</div>
+
+<script src="js/lublin-data.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
